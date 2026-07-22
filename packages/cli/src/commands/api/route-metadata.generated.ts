@@ -4892,6 +4892,7 @@ export const API_ROUTE_METADATA = {
       "metadata",
       "requestContext",
       "source",
+      "timeout",
       "toolMocks"
     ],
     "hasQuery": false,
@@ -4963,6 +4964,7 @@ export const API_ROUTE_METADATA = {
       "metadata",
       "requestContext",
       "source",
+      "timeout",
       "toolMocks"
     ],
     "hasQuery": false,
@@ -5095,6 +5097,7 @@ export const API_ROUTE_METADATA = {
     "queryParams": [],
     "bodyParams": [
       "agentVersion",
+      "itemTimeout",
       "maxConcurrency",
       "requestContext",
       "scorerIds",
