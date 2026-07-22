@@ -2640,6 +2640,7 @@ export interface DatasetItem {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  timeout?: number;
   requestContext?: Record<string, unknown>;
   metadata?: unknown;
   source?: DatasetItemSource;
@@ -2756,6 +2757,7 @@ export interface AddDatasetItemParams {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  timeout?: number;
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
   source?: DatasetItemSource;
@@ -2768,6 +2770,7 @@ export interface UpdateDatasetItemParams {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  timeout?: number;
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
   source?: DatasetItemSource;
@@ -2781,6 +2784,7 @@ export interface BatchInsertDatasetItemsParams {
     groundTruth?: unknown;
     expectedTrajectory?: unknown;
     toolMocks?: DatasetItemToolMock[];
+    timeout?: number;
     requestContext?: Record<string, unknown>;
     metadata?: Record<string, unknown>;
     source?: DatasetItemSource;
@@ -2817,6 +2821,7 @@ export interface TriggerDatasetExperimentParams {
   version?: number;
   agentVersion?: string;
   maxConcurrency?: number;
+  itemTimeout?: number;
   requestContext?: Record<string, unknown>;
 }
 
@@ -2841,6 +2846,7 @@ export interface DatasetItemVersionResponse {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  timeout?: number;
   metadata?: Record<string, unknown>;
   validTo: number | null;
   isDeleted: boolean;
