@@ -2483,6 +2483,7 @@ export interface DatasetItem {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  scorerIds?: string[];
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
   source?: DatasetItemSource;
@@ -2506,6 +2507,7 @@ export interface DatasetItemRow {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  scorerIds?: string[];
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
   source?: DatasetItemSource;
@@ -2622,6 +2624,7 @@ export interface DatasetItemPayload {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  scorerIds?: string[];
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
   source?: DatasetItemSource;
@@ -2644,9 +2647,10 @@ export interface AddDatasetItemInput extends DatasetItemPayload {
  * The optional `filters` field is a tenancy read-scope for the parent dataset;
  * see {@link AddDatasetItemInput.filters}.
  */
-export interface UpdateDatasetItemInput extends Partial<Omit<DatasetItemPayload, 'externalId'>> {
+export interface UpdateDatasetItemInput extends Partial<Omit<DatasetItemPayload, 'externalId' | 'scorerIds'>> {
   id: string;
   datasetId: string;
+  scorerIds?: string[] | null;
   filters?: DatasetTenancyFilters;
 }
 
