@@ -2640,6 +2640,7 @@ export interface DatasetItem {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  scorerIds?: string[];
   requestContext?: Record<string, unknown>;
   metadata?: unknown;
   source?: DatasetItemSource;
@@ -2756,6 +2757,7 @@ export interface AddDatasetItemParams {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  scorerIds?: string[];
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
   source?: DatasetItemSource;
@@ -2768,6 +2770,7 @@ export interface UpdateDatasetItemParams {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  scorerIds?: string[] | null;
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
   source?: DatasetItemSource;
@@ -2781,6 +2784,7 @@ export interface BatchInsertDatasetItemsParams {
     groundTruth?: unknown;
     expectedTrajectory?: unknown;
     toolMocks?: DatasetItemToolMock[];
+    scorerIds?: string[];
     requestContext?: Record<string, unknown>;
     metadata?: Record<string, unknown>;
     source?: DatasetItemSource;
@@ -2841,6 +2845,7 @@ export interface DatasetItemVersionResponse {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  scorerIds?: string[];
   metadata?: Record<string, unknown>;
   validTo: number | null;
   isDeleted: boolean;
