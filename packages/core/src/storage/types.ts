@@ -2483,6 +2483,7 @@ export interface DatasetItem {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  /** Execution timeout override in milliseconds. Must be a positive integer no greater than 30 minutes. */
   timeout?: number;
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
@@ -2507,6 +2508,7 @@ export interface DatasetItemRow {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  /** Execution timeout override in milliseconds. Must be a positive integer no greater than 30 minutes. */
   timeout?: number;
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
@@ -2624,6 +2626,7 @@ export interface DatasetItemPayload {
   groundTruth?: unknown;
   expectedTrajectory?: unknown;
   toolMocks?: DatasetItemToolMock[];
+  /** Execution timeout override in milliseconds. Must be a positive integer no greater than 30 minutes. */
   timeout?: number;
   requestContext?: Record<string, unknown>;
   metadata?: Record<string, unknown>;
