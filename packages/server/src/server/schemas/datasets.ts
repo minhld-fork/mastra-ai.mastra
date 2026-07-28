@@ -11,6 +11,9 @@ const jsonSchemaObject: z.ZodType<Record<string, unknown>> = z.lazy(() => z.reco
 // JSON Schema field (object or null to disable)
 const jsonSchemaField = z.union([jsonSchemaObject, z.null()]).optional();
 
+const MAX_EXPERIMENT_ITEM_TIMEOUT_MS = 30 * 60 * 1000;
+const experimentTimeoutSchema = z.number().int().min(1).max(MAX_EXPERIMENT_ITEM_TIMEOUT_MS);
+
 // ============================================================================
 // Trajectory Expectation Schema (2 levels deep, children at level 2 use z.unknown())
 // ============================================================================
@@ -303,7 +306,9 @@ export const addItemBodySchema = z.object({
   groundTruth: z.unknown().optional().describe('Expected output for comparison'),
   expectedTrajectory: trajectoryExpectationSchema,
   toolMocks: toolMocksSchema,
-  timeout: z.number().int().positive().optional().describe('Execution timeout override in milliseconds'),
+  timeout: experimentTimeoutSchema
+    .optional()
+    .describe('Execution timeout override in milliseconds, from 1 to 1,800,000 (30 minutes)'),
   requestContext: z.record(z.string(), z.unknown()).optional().describe('Request context preset for this item'),
   metadata: z.record(z.string(), z.unknown()).optional().describe('Additional metadata'),
   source: datasetItemSourceSchema,
@@ -314,7 +319,9 @@ export const updateItemBodySchema = z.object({
   groundTruth: z.unknown().optional().describe('Expected output for comparison'),
   expectedTrajectory: trajectoryExpectationSchema,
   toolMocks: toolMocksSchema,
-  timeout: z.number().int().positive().optional().describe('Execution timeout override in milliseconds'),
+  timeout: experimentTimeoutSchema
+    .optional()
+    .describe('Execution timeout override in milliseconds, from 1 to 1,800,000 (30 minutes)'),
   requestContext: z.record(z.string(), z.unknown()).optional().describe('Request context preset for this item'),
   metadata: z.record(z.string(), z.unknown()).optional().describe('Additional metadata'),
   source: datasetItemSourceSchema,
@@ -327,7 +334,9 @@ export const triggerExperimentBodySchema = z.object({
   version: z.coerce.number().int().optional().describe('Pin to specific dataset version'),
   agentVersion: z.string().optional().describe('Agent version ID to use for experiment'),
   maxConcurrency: z.number().optional().describe('Maximum concurrent executions'),
-  itemTimeout: z.number().int().positive().optional().describe('Fallback execution timeout per item in milliseconds'),
+  itemTimeout: experimentTimeoutSchema
+    .optional()
+    .describe('Fallback execution timeout per item in milliseconds, from 1 to 1,800,000 (30 minutes)'),
   requestContext: z.record(z.string(), z.unknown()).optional().describe('Global request context passed to the target'),
   versions: z
     .object({
@@ -380,7 +389,7 @@ export const datasetItemResponseSchema = z.object({
   groundTruth: z.unknown().optional(),
   expectedTrajectory: z.unknown().optional(),
   toolMocks: toolMocksSchema,
-  timeout: z.number().int().positive().optional(),
+  timeout: experimentTimeoutSchema.optional(),
   requestContext: z.record(z.string(), z.unknown()).optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
   source: datasetItemSourceSchema,
@@ -564,7 +573,7 @@ export const itemVersionResponseSchema = z.object({
   groundTruth: z.unknown().optional(),
   expectedTrajectory: z.unknown().optional(),
   toolMocks: toolMocksSchema,
-  timeout: z.number().int().positive().optional(),
+  timeout: experimentTimeoutSchema.optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
   validTo: z.number().int().nullable(),
   isDeleted: z.boolean(),
@@ -601,7 +610,9 @@ export const batchInsertItemsBodySchema = z.object({
       groundTruth: z.unknown().optional(),
       expectedTrajectory: trajectoryExpectationSchema,
       toolMocks: toolMocksSchema,
-      timeout: z.number().int().positive().optional().describe('Execution timeout override in milliseconds'),
+      timeout: experimentTimeoutSchema
+        .optional()
+        .describe('Execution timeout override in milliseconds, from 1 to 1,800,000 (30 minutes)'),
       requestContext: z.record(z.string(), z.unknown()).optional(),
       metadata: z.record(z.string(), z.unknown()).optional(),
       source: datasetItemSourceSchema,

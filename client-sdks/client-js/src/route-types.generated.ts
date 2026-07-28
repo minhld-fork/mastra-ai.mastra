@@ -17027,7 +17027,7 @@ export type PostDatasetsDatasetIdItems_Body = {
   expectedTrajectory?: (Shared_Type_131 | undefined) | null;
   /** Ordered item-level static tool mocks served in place of executing the real tool */
   toolMocks?: Shared_Type_114[] | undefined;
-  /** Execution timeout override in milliseconds */
+  /** Execution timeout override in milliseconds, from 1 to 1,800,000 (30 minutes) */
   timeout?: number | undefined;
   /** Request context preset for this item */
   requestContext?:
@@ -17080,7 +17080,7 @@ export type PostDatasetsDatasetIdItemsBatch_Body = {
     expectedTrajectory?: (Shared_Type_131 | undefined) | null;
     /** Ordered item-level static tool mocks served in place of executing the real tool */
     toolMocks?: Shared_Type_114[] | undefined;
-    /** Execution timeout override in milliseconds */
+    /** Execution timeout override in milliseconds, from 1 to 1,800,000 (30 minutes) */
     timeout?: number | undefined;
     requestContext?:
       | {
@@ -17201,7 +17201,7 @@ export type PatchDatasetsDatasetIdItemsItemId_Body = {
   expectedTrajectory?: (Shared_Type_131 | undefined) | null;
   /** Ordered item-level static tool mocks served in place of executing the real tool */
   toolMocks?: Shared_Type_114[] | undefined;
-  /** Execution timeout override in milliseconds */
+  /** Execution timeout override in milliseconds, from 1 to 1,800,000 (30 minutes) */
   timeout?: number | undefined;
   /** Request context preset for this item */
   requestContext?:
@@ -17493,7 +17493,7 @@ export type PostDatasetsDatasetIdExperiments_Body = {
   agentVersion?: string | undefined;
   /** Maximum concurrent executions */
   maxConcurrency?: number | undefined;
-  /** Fallback execution timeout per item in milliseconds */
+  /** Fallback execution timeout per item in milliseconds, from 1 to 1,800,000 (30 minutes) */
   itemTimeout?: number | undefined;
   /** Global request context passed to the target */
   requestContext?:
