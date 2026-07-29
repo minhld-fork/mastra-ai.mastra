@@ -188,6 +188,7 @@ async function prepareFactoryRuleBinding(
       },
     },
     ...(input.invocation ? { invocation: input.invocation } : {}),
+    ...(input.defaultModelId ? { defaultModelId: input.defaultModelId } : {}),
   });
 }
 
