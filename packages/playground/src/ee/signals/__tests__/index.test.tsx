@@ -13,6 +13,7 @@ import {
   firstThemeExamplesResponse,
   themeDetailResponse,
   themeHistoryResponse,
+  traceInsightResponse,
 } from './fixtures/theme-drilldown';
 import {
   billingThemeSnapshotsResponse,
@@ -45,8 +46,8 @@ function renderSignalsPageWithShell() {
   const router = createMemoryRouter(
     [
       {
-        path: '/signals',
-        handle: navHandle('/signals'),
+        path: '/intelligence',
+        handle: navHandle('/intelligence'),
         element: (
           <QueryClientProvider client={queryClient}>
             <RouteHeader />
@@ -55,7 +56,7 @@ function renderSignalsPageWithShell() {
         ),
       },
     ],
-    { initialEntries: ['/signals'] },
+    { initialEntries: ['/intelligence'] },
   );
   return render(<RouterProvider router={router} />);
 }
@@ -77,7 +78,7 @@ describe('Signals page', () => {
 
       renderSignalsPage();
 
-      expect(await screen.findByRole('status', { name: 'Loading signal analysis' })).not.toBeNull();
+      expect(await screen.findByRole('status', { name: 'Loading trace intelligence' })).not.toBeNull();
     });
   });
 
@@ -91,7 +92,7 @@ describe('Signals page', () => {
 
       renderSignalsPage();
 
-      expect(await screen.findByText('Unable to load signal entities.')).not.toBeNull();
+      expect(await screen.findByText('Unable to load trace intelligence entities.')).not.toBeNull();
     });
   });
 
@@ -115,7 +116,7 @@ describe('Signals page', () => {
 
       renderSignalsPage();
 
-      expect(await screen.findByText('Unable to load signal entities.')).not.toBeNull();
+      expect(await screen.findByText('Unable to load trace intelligence entities.')).not.toBeNull();
       fireEvent.click(screen.getByRole('button', { name: 'Retry' }));
 
       expect(await screen.findByRole('combobox', { name: 'Agent' })).not.toBeNull();
@@ -157,14 +158,14 @@ describe('Signals page', () => {
     it('exposes the theme flow as a named region', async () => {
       renderSignalsPage();
 
-      expect(await screen.findByRole('region', { name: 'Signal theme flow' })).not.toBeNull();
+      expect(await screen.findByRole('region', { name: 'Trace signal theme flow' })).not.toBeNull();
     });
 
-    it('keeps exactly one Signals documentation action across the shell and page', async () => {
+    it('keeps exactly one trace intelligence documentation action across the shell and page', async () => {
       renderSignalsPageWithShell();
-      await screen.findByRole('region', { name: 'Signal theme flow' });
+      await screen.findByRole('region', { name: 'Trace signal theme flow' });
 
-      expect(screen.getAllByRole('link', { name: 'Signals documentation' })).toHaveLength(1);
+      expect(screen.getAllByRole('link', { name: 'Trace intelligence documentation' })).toHaveLength(1);
     });
 
     it('keeps the single agent visible in the selector', async () => {
@@ -186,7 +187,7 @@ describe('Signals page', () => {
       renderSignalsPage();
 
       expect(await screen.findByRole('button', { name: 'Last 7 days' })).not.toBeNull();
-      expect(screen.getByRole('status', { name: 'Loading signal analysis' })).not.toBeNull();
+      expect(screen.getByRole('status', { name: 'Loading trace intelligence' })).not.toBeNull();
     });
   });
 
@@ -200,7 +201,7 @@ describe('Signals page', () => {
       );
       renderSignalsPage();
 
-      expect(await screen.findByText('Unable to load signal flow.')).not.toBeNull();
+      expect(await screen.findByText('Unable to load trace signal flow.')).not.toBeNull();
       expect(screen.getByRole('button', { name: 'Last 7 days' })).not.toBeNull();
     });
   });
@@ -237,7 +238,7 @@ describe('Signals page', () => {
 
       renderSignalsPage();
 
-      expect(await screen.findByRole('region', { name: 'Signal theme flow' })).not.toBeNull();
+      expect(await screen.findByRole('region', { name: 'Trace signal theme flow' })).not.toBeNull();
       expect(screen.getByText('Snapshot date')).not.toBeNull();
       expect(screen.getByRole('button', { name: 'Last 7 days' })).not.toBeNull();
       expect(snapshotRequests).toHaveLength(1);
@@ -269,7 +270,7 @@ describe('Signals page', () => {
         }),
       );
       renderSignalsPage();
-      await screen.findByRole('region', { name: 'Signal theme flow' });
+      await screen.findByRole('region', { name: 'Trace signal theme flow' });
 
       fireEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
       fireEvent.click(await screen.findByText('Last 14 days'));
@@ -311,6 +312,40 @@ describe('Signals page', () => {
     });
   });
 
+  describe('when a theme example is opened from the page', () => {
+    it('reaches the trace insight view with a link to the full trace', async () => {
+      server.use(
+        http.get(`${BASE_URL}/api/learning/entities`, () => HttpResponse.json(populatedThemeEntitiesResponse)),
+        http.get(`${BASE_URL}/api/learning/entities/support-agent/theme-snapshots`, () =>
+          HttpResponse.json(themeSnapshotsResponse),
+        ),
+        http.get(`${BASE_URL}/api/learning/entities/support-agent/theme-flow`, () =>
+          HttpResponse.json(drilldownThemeFlowResponse),
+        ),
+        http.get(`${BASE_URL}/api/learning/entities/support-agent/themes/:themeId`, () =>
+          HttpResponse.json(themeDetailResponse),
+        ),
+        http.get(`${BASE_URL}/api/learning/entities/support-agent/themes/:themeId/examples`, () =>
+          HttpResponse.json(firstThemeExamplesResponse),
+        ),
+        http.get(`${BASE_URL}/api/learning/entities/support-agent/themes/:themeId/history`, () =>
+          HttpResponse.json(themeHistoryResponse),
+        ),
+        http.get(`${BASE_URL}/api/learning/traces/trace-1/summary`, () => HttpResponse.json(traceInsightResponse)),
+      );
+      renderSignalsPage();
+
+      fireEvent.click(await screen.findByRole('button', { name: 'View theme details for Add transcript' }));
+      await screen.findByRole('dialog', { name: 'Add transcript' });
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'View trace insight for Add this transcript to my workspace.' }),
+      );
+
+      expect(await screen.findByText('Add a transcript to the workspace.')).not.toBeNull();
+      expect(screen.getByRole('link', { name: 'Open full trace' }).getAttribute('href')).toBe('/traces/trace-1');
+    });
+  });
+
   describe('when a custom snapshot date range is applied', () => {
     it('requests snapshots with inclusive start and end timestamps', async () => {
       vi.spyOn(Date, 'now').mockReturnValue(new Date('2026-07-27T12:00:00.000Z').getTime());
@@ -326,7 +361,7 @@ describe('Signals page', () => {
         ),
       );
       renderSignalsPage();
-      await screen.findByRole('region', { name: 'Signal theme flow' });
+      await screen.findByRole('region', { name: 'Trace signal theme flow' });
 
       fireEvent.click(screen.getByRole('button', { name: 'Last 7 days' }));
       fireEvent.click(await screen.findByText('Custom range...'));
@@ -358,7 +393,7 @@ describe('Signals page', () => {
       renderSignalsPage();
 
       expect((await screen.findByRole('combobox', { name: 'Agent' })).textContent).toContain('support-agent');
-      expect(screen.queryByText('Not enough signal data yet')).toBeNull();
+      expect(screen.queryByText('Not enough trace signal data yet')).toBeNull();
     });
   });
 
@@ -393,8 +428,8 @@ describe('Signals page', () => {
       fireEvent.pointerDown(triageAgent, { pointerType: 'mouse' });
       fireEvent.click(triageAgent, { detail: 1 });
 
-      expect(await screen.findByText('Not enough signal data yet')).not.toBeNull();
-      expect(screen.getByText('Available signals: Goal')).not.toBeNull();
+      expect(await screen.findByText('Not enough trace signal data yet')).not.toBeNull();
+      expect(screen.getByText('Available trace signals: Goal')).not.toBeNull();
       expect(screen.getByRole('combobox', { name: 'Agent' })).not.toBeNull();
     });
   });
