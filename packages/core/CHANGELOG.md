@@ -1,5 +1,19 @@
 # @mastra/core
 
+## 1.56.0-alpha.1
+
+### Minor Changes
+
+- Added `unmockedToolPolicy` to experiments and dataset items so undeclared agent tool calls can be blocked before execution. ([#19643](https://github.com/mastra-ai/mastra/pull/19643))
+
+  ```typescript
+  await dataset.startExperiment({
+    targetType: 'agent',
+    targetId: 'weather-agent',
+    unmockedToolPolicy: 'deny',
+  });
+  ```
+
 ## 1.56.0-alpha.0
 
 ### Minor Changes

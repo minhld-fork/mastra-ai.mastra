@@ -1,5 +1,15 @@
 # @mastra/deployer
 
+## 1.56.0-alpha.1
+
+### Patch Changes
+
+- Prevent background workflow recovery failures from terminating the server. ([#19639](https://github.com/mastra-ai/mastra/pull/19639))
+
+- Updated dependencies [[`4e35a56`](https://github.com/mastra-ai/mastra/commit/4e35a56cdf8d74a5ff6d5eda01f2c1deaf6cc7be), [`4e35a56`](https://github.com/mastra-ai/mastra/commit/4e35a56cdf8d74a5ff6d5eda01f2c1deaf6cc7be), [`8ac9019`](https://github.com/mastra-ai/mastra/commit/8ac9019db164b0703035c27da22c28e675053ce2)]:
+  - @mastra/server@1.56.0-alpha.1
+  - @mastra/core@1.56.0-alpha.1
+
 ## 1.56.0-alpha.0
 
 ### Patch Changes

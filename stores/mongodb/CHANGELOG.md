@@ -1,5 +1,23 @@
 # @mastra/mongodb
 
+## 1.16.0-alpha.0
+
+### Minor Changes
+
+- Added persistence for dataset item undeclared tool policies. ([#19643](https://github.com/mastra-ai/mastra/pull/19643))
+
+  ```typescript
+  await dataset.addItem({
+    input: 'What is the weather?',
+    unmockedToolPolicy: 'deny',
+  });
+  ```
+
+### Patch Changes
+
+- Updated dependencies [[`4e35a56`](https://github.com/mastra-ai/mastra/commit/4e35a56cdf8d74a5ff6d5eda01f2c1deaf6cc7be)]:
+  - @mastra/core@1.56.0-alpha.1
+
 ## 1.15.1
 
 ### Patch Changes
